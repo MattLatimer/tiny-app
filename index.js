@@ -6,6 +6,10 @@ const bodyParser = require('body-parser');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 
+const generateRandomString = function() {
+  return Math.floor((1 + Math.random()) * 2176782336).toString(36).substring(1);
+};
+
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
