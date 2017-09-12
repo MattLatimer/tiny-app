@@ -13,6 +13,11 @@ app.get("/", (req, res) => {
   res.end("Hello!");
 });
 
+app.get ('/urls/:id', (req, res) => {
+  let templateVars = { shortURL: req.params.id, urls: urlDatabase };
+  res.render('urls-show', templateVars);
+});
+
 app.get ('/urls', (req, res) => {
   let templateVars = { urls: urlDatabase};
   res.render('urls-index', templateVars);
