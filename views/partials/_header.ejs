@@ -1,5 +1,16 @@
 <h1>Tiny App</h1>
-<form action="/login" method="post">
-  <input type="text" name='username' placeholder="login">
-  <input type="submit" value='Submit'>
-</form>
+<table>
+  <tr>
+    <td>
+      <form action="/login" method="post">
+        <input type="text" name='username' placeholder="login">
+        <input type="submit" value='Submit'>
+      </form>
+    </td>
+    <td>
+      <% if(username) { %>
+        <p>Currently logged in as: <%= username %></p>
+      <% } %>
+    </td>
+  </tr>
+</table>
