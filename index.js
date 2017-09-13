@@ -3,9 +3,11 @@ const app = express();
 // default port 8080
 const PORT = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
 
 const generateRandomString = function() {
   return Math.floor((1 + Math.random()) * 2176782336).toString(36).substring(1);
