@@ -10,16 +10,12 @@
     <%- include ./partials/_header %>    
   <table>
     <tr>
-      <td><%= shortURL %> - </td>
-      <td><%= urls[shortURL] %></td>
-    </tr>
-    <tr>
-      <td></td>
+      <td><%= shortURL %>: </td>
       <td>
-        <form action="/urls/<%= shortURL %>/update" method="post">
-          <input type="text" id='longURL' name='longURL'>
-          <input type="submit" value='Update' id="longURL">
-        </form>
+          <form action="/urls/<%= shortURL %>/update" method="post">
+            <input type="text" id='longURL' name='longURL' value='<%= urls[shortURL] %>'>
+            <input type="submit" value='Update' id="longURL">
+          </form>
       </td>
     </tr>
   </table>
