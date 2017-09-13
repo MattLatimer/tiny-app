@@ -22,6 +22,11 @@ app.get("/", (req, res) => {
   res.end("Hello!");
 });
 
+app.post('/login', (req, res) => {
+  res.cookie('username', req.body.username);
+  res.redirect(303, '/urls');
+});
+
 app.get('/u/:shortURL', (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(301, longURL ? longURL : '/urls');
