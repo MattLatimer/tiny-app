@@ -33,7 +33,8 @@ app.get('/urls', (req, res) => {
 app.post('/urls', (req, res) => {
   const shortURL = generateRandomString();
   const {longURL} = req.body;
-  urlDatabase[shortURL] = longURL;
+  const schemeIncluded = longURL.search('://');
+  urlDatabase[shortURL] = (schemeIncluded !== -1) ? longURL : `http://${longURL}`;
   res.redirect(303, `/urls/${shortURL}`);
 });
 
