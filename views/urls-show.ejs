@@ -9,8 +9,19 @@
 <body>
     <%- include ./partials/_header %>    
   <table>
-    <td><%= shortURL %></td>
-    <td><%= urls[shortURL] %></td>
+    <tr>
+      <td><%= shortURL %> - </td>
+      <td><%= urls[shortURL] %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <form action="/urls/<%= shortURL %>/update" method="post">
+          <input type="text" id='longURL' name='longURL'>
+          <input type="submit" value='Update' id="longURL">
+        </form>
+      </td>
+    </tr>
   </table>
 </body>
 </html>
