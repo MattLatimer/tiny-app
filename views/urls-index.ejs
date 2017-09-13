@@ -11,8 +11,10 @@
   <table>
     <% for (let key in urls) { %>
     <tr>
-      <td><a href="/urls/<%= key %>"><%= key %></a></td>
+      <td><%= key %></td>
+      <td> => </td>
       <td><%= urls[key] %></td>
+      <td><a href="/urls/<%= key %>">Edit</a></td>
       <td><form action="/urls/<%= key %>/delete" method="post">
         <input type="submit" value='Delete'>
       </form></td>
