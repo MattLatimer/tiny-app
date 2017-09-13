@@ -13,6 +13,9 @@
     <tr>
       <td><%= key %></td>
       <td><%= urls[key] %></td>
+      <td><form action="/urls/<%= key %>/delete" method="post">
+        <input type="submit" value='delete'>
+      </form></td>
     </tr>
     <% } %>
   </table>

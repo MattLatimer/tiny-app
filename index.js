@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 8080; // default port 8080
+// default port 8080
+const PORT = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
 
 app.set('view engine', 'ejs');
@@ -20,7 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.get('/u/:shortURL', (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL]
+  const longURL = urlDatabase[req.params.shortURL];
   res.redirect(301, longURL ? longURL : '/urls');
 });
 
@@ -44,6 +45,11 @@ app.get('/urls/new', (req, res) => {
 app.get('/urls/:id', (req, res) => {
   let templateVars = { shortURL: req.params.id, urls: urlDatabase };
   res.render('urls-show', templateVars);
+});
+
+app.post('/urls/:id/delete', (req, res) => {
+  delete urlDatabase[req.params.id];
+  res.redirect(303, '/urls');
 });
 
 app.get('/urls.json', (req, res) => {
