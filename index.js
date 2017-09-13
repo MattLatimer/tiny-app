@@ -18,6 +18,8 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+app.locals.urls = urlDatabase;
+
 app.get("/", (req, res) => {
   res.end("Hello!");
 });
@@ -33,8 +35,7 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  let templateVars = { urls: urlDatabase};
-  res.render('urls-index', templateVars);
+  res.render('urls-index');
 });
 
 app.post('/urls', (req, res) => {
@@ -45,12 +46,11 @@ app.post('/urls', (req, res) => {
 });
 
 app.get('/urls/new', (req, res) => {
-  let templateVars = { urls: urlDatabase};
-  res.render('urls-new', templateVars);
+  res.render('urls-new');
 });
 
 app.get('/urls/:id', (req, res) => {
-  let templateVars = { shortURL: req.params.id, urls: urlDatabase };
+  let templateVars = { shortURL: req.params.id};
   res.render('urls-show', templateVars);
 });
 
