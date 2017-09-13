@@ -25,8 +25,10 @@ app.get('/urls', (req, res) => {
 });
 
 app.post('/urls', (req, res) => {
-  console.log(req.body);
-  res.send('ok');
+  const shortURL = generateRandomString();
+  const {longURL} = req.body;
+  urlDatabase[shortURL] = longURL;
+  res.redirect(301, `/urls/${shortURL}`);
 });
 
 app.get('/urls/new', (req, res) => {
