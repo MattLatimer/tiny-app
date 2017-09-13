@@ -20,7 +20,8 @@ app.get("/", (req, res) => {
 });
 
 app.get('/u/:shortURL', (req, res) => {
-  res.redirect(301, urlDatabase[req.params.shortURL]);
+  const longURL = urlDatabase[req.params.shortURL]
+  res.redirect(301, longURL ? longURL : '/urls');
 });
 
 app.get('/urls', (req, res) => {
@@ -32,7 +33,7 @@ app.post('/urls', (req, res) => {
   const shortURL = generateRandomString();
   const {longURL} = req.body;
   urlDatabase[shortURL] = longURL;
-  res.redirect(302, `/urls/${shortURL}`);
+  res.redirect(303, `/urls/${shortURL}`);
 });
 
 app.get('/urls/new', (req, res) => {
