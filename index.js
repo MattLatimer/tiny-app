@@ -48,7 +48,7 @@ app.get('/urls/:id', (req, res) => {
 });
 
 app.post('/urls/:id/update', (req, res) => {
-  urlDatabase[req.params.id] = req.body['longURL'];
+  urlDatabase[req.params.id] = req.body.longURL;
   res.redirect(303, '/urls');
 });
 
