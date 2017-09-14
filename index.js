@@ -6,6 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 
 // Set Middleware
 //---------------
@@ -88,7 +89,7 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
   user = isRegistered(req.body.email);
-  if (user && req.body.password === users[user].password) {
+  if (user && bcrypt.compareSync(req.body.password, users[user].password)) {
     res.cookie('user_id', user);
     res.redirect(303, '/urls');
   } else {
@@ -115,7 +116,7 @@ app.post('/register', (req, res) => {
     users[newId] = {
       id: newId,
       email: req.body.email,
-      password: req.body.password
+      password: bcrypt.hashSync(req.body.password, 10)
     };
     res.cookie('user_id', newId);
     res.redirect(303, '/urls');
