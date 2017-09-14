@@ -13,16 +13,17 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
-app.use((req, res, next) => {
-  res.locals.userId = req.cookies.user_id;
-  next();
-});
-
 // Prefilled "Databases"
 //----------------------
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {
+    url: "http://www.lighthouselabs.ca",
+    userId: 'userRandomID'
+  },
+  "9sm5xK": {
+    url: "http://www.google.com",
+    userId: 'user2RandomID'
+  }
 };
 
 const users = {
@@ -58,6 +59,13 @@ const isRegistered = function(mail) {
 app.locals.urls = urlDatabase;
 app.locals.users = users;
 
+// Cookie Handling
+//----------------
+app.use((req, res, next) => {
+  res.locals.userId = req.cookies.user_id;
+  next();
+});
+
 // Server Routing
 //---------------
 app.get("/", (req, res) => {
@@ -84,7 +92,6 @@ app.post('/logout', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  res.locals.userId = req.cookies.user_id;
   res.render('urls-register');
 });
 
@@ -106,20 +113,12 @@ app.post('/register', (req, res) => {
 });
 
 app.get('/u/:shortURL', (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
+  const longURL = urlDatabase[req.params.shortURL].url;
   res.redirect(301, longURL ? longURL : '/urls');
 });
 
 app.get('/urls', (req, res) => {
   res.render('urls-index');
-});
-
-app.post('/urls', (req, res) => {
-  const shortURL = generateRandomString();
-  const {longURL} = req.body;
-  const schemeIncluded = longURL.search(':');
-  urlDatabase[shortURL] = (schemeIncluded !== -1) ? longURL : `http://${longURL}`;
-  res.redirect(303, `/urls/${shortURL}`);
 });
 
 app.get('/urls/new', (req, res) => {
@@ -130,13 +129,24 @@ app.get('/urls/new', (req, res) => {
   }
 });
 
+app.post('/urls/new', (req, res) => {
+  const shortURL = generateRandomString();
+  const {longURL} = req.body;
+  const schemeIncluded = longURL.search(':');
+  urlDatabase[shortURL] = {
+    url: (schemeIncluded !== -1) ? longURL : `http://${longURL}`,
+    userId: res.locals.userId
+  };
+  res.redirect(303, `/urls/${shortURL}`);
+});
+
 app.get('/urls/:id', (req, res) => {
   res.locals.shortURL = req.params.id;
   res.render('urls-show');
 });
 
 app.post('/urls/:id/update', (req, res) => {
-  urlDatabase[req.params.id] = req.body.longURL;
+  urlDatabase[req.params.id].url = req.body.longURL;
   res.redirect(303, '/urls');
 });
 
