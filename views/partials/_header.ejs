@@ -1,1 +1,21 @@
 <h1>Tiny App</h1>
+<table>
+  <tr>
+    <td>
+      <% if(username) { %>
+        Current User: <%= username %>
+    </td>
+    <td>
+        <form action="/logout" method='post'>
+          <input type="submit" value='Log Out'>
+        </form>
+      </td>
+      <% } else { %>
+      <form action="/login" method="post">
+        <input type="text" name='username' placeholder="login">
+        <input type="submit" value='Submit'>
+      </form>
+      <% } %>
+    </td>
+  </tr>
+</table>
