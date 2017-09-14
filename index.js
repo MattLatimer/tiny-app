@@ -1,3 +1,5 @@
+// Load Requirments
+
 const express = require("express");
 const app = express();
 // default port 8080
@@ -5,13 +7,13 @@ const PORT = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
+// Set Middleware
+
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
-const generateRandomString = function() {
-  return Math.floor((1 + Math.random()) * 2176782336).toString(36).substring(1);
-};
+// Prefilled "Databases"
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -30,6 +32,26 @@ const users = {
     password: "dishwasher-funk"
   }
 };
+
+// Helpful Functions
+
+const generateRandomString = function() {
+  return Math.floor((1 + Math.random()) * 2176782336).toString(36).substring(1);
+};
+
+const alreadyRegistered = function(mail) {
+  let isIt = false;
+  for (const user in users) {
+    console.log(users[user].email, mail);
+    if (users[user].email === mail) {
+      isIt = true;
+    }
+  }
+  console.log(isIt);
+  return isIt;
+};
+
+// Server Routing
 
 app.locals.urls = urlDatabase;
 
@@ -54,13 +76,19 @@ app.get('/register', (req, res) => {
 
 app.post('/register', (req, res) => {
   const newId = generateRandomString();
-  users[newId] = {
-    id: newId,
-    email: req.body.email,
-    password: req.body.password
-  };
-  res.cookie('user_id', newId);
-  res.redirect(303, '/urls');
+  if (!req.body.email || !req.body.password) {
+    res.status(400).send('Bad Request: Missing Email or Password');
+  } else if (alreadyRegistered(req.body.email)) {
+    res.status(400).send('Bad Request: Email already registered');
+  } else {
+    users[newId] = {
+      id: newId,
+      email: req.body.email,
+      password: req.body.password
+    };
+    res.cookie('user_id', newId);
+    res.redirect(303, '/urls');
+  }
 });
 
 app.get('/u/:shortURL', (req, res) => {
