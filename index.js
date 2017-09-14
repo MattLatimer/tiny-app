@@ -130,14 +130,18 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.post('/urls/new', (req, res) => {
-  const shortURL = generateRandomString();
-  const {longURL} = req.body;
-  const schemeIncluded = longURL.search(':');
-  urlDatabase[shortURL] = {
-    url: (schemeIncluded !== -1) ? longURL : `http://${longURL}`,
-    userId: res.locals.userId
-  };
-  res.redirect(303, `/urls/${shortURL}`);
+  if (res.locals.userId) {
+    const shortURL = generateRandomString();
+    const {longURL} = req.body;
+    const schemeIncluded = longURL.search(':');
+    urlDatabase[shortURL] = {
+      url: (schemeIncluded !== -1) ? longURL : `http://${longURL}`,
+      userId: res.locals.userId
+    };
+    res.redirect(303, `/urls/${shortURL}`);
+  } else {
+    res.redirect('/login');
+  }
 });
 
 app.get('/urls/:id', (req, res) => {
@@ -146,12 +150,18 @@ app.get('/urls/:id', (req, res) => {
 });
 
 app.post('/urls/:id/update', (req, res) => {
-  urlDatabase[req.params.id].url = req.body.longURL;
+  const targetURL = urlDatabase[req.params.id];
+  if (res.locals.userId === targetURL.userId) {
+    target.url = req.body.longURL;
+  }
   res.redirect(303, '/urls');
 });
 
 app.post('/urls/:id/delete', (req, res) => {
-  delete urlDatabase[req.params.id];
+  const targetURL = urlDatabase[req.params.id];
+  if (res.locals.userId === targetURL.userId) {
+    delete urlDatabase[req.params.id];
+  }
   res.redirect(303, '/urls');
 });
 
