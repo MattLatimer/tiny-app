@@ -157,8 +157,12 @@ app.post('/urls/new', (req, res) => {
 });
 
 app.get('/urls/:id', (req, res) => {
-  res.locals.shortURL = req.params.id;
-  res.render('urls-show');
+  if (res.locals.userId === urlDatabase[req.params.id].userId) {
+    res.locals.shortURL = req.params.id;
+    res.render('urls-show');
+  } else {
+    res.status(403).send('This doesn\'t belong to you!')
+  }
 });
 
 app.post('/urls/:id/update', (req, res) => {
