@@ -3,9 +3,9 @@
   <head>
     <title>Tiny App</title>
   </head>
-  <body>
+  <body OnLoad='document.urlForm.longURL.focus();'>
     <% include partials/_header %>
-    <form action="/urls/new" method="POST">
+    <form name='urlForm' action="/urls/new" method="POST">
       <label for="longURL">Enter a URL:</label>
       <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
       <input type="submit" value="Submit">
