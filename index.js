@@ -123,13 +123,11 @@ app.post('/urls', (req, res) => {
 });
 
 app.get('/urls/new', (req, res) => {
-  res.locals.userId = req.cookies.user_id;
   res.render('urls-new');
 });
 
 app.get('/urls/:id', (req, res) => {
   res.locals.shortURL = req.params.id;
-  res.locals.userId = req.cookies.user_id;
   res.render('urls-show');
 });
 
