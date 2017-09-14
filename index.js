@@ -54,13 +54,18 @@ const alreadyRegistered = function(mail) {
 // Server Routing
 
 app.locals.urls = urlDatabase;
+app.locals.users = users;
 
 app.get("/", (req, res) => {
   res.end("Hello!");
 });
 
+app.get('/login', (req, res) => {
+  res.render('urls-login');
+});
+
 app.post('/login', (req, res) => {
-  res.cookie('username', req.body.username);
+
   res.redirect(303, '/urls');
 });
 
@@ -104,7 +109,7 @@ app.get('/urls', (req, res) => {
 app.post('/urls', (req, res) => {
   const shortURL = generateRandomString();
   const {longURL} = req.body;
-  const schemeIncluded = longURL.search('://');
+  const schemeIncluded = longURL.search(':');
   urlDatabase[shortURL] = (schemeIncluded !== -1) ? longURL : `http://${longURL}`;
   res.redirect(303, `/urls/${shortURL}`);
 });
@@ -115,11 +120,9 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.get('/urls/:id', (req, res) => {
-  let templateVars = {
-    shortURL: req.params.id,
-    username: req.cookies.username
-  };
-  res.render('urls-show', templateVars);
+  res.locals.shortURL = req.params.id;
+  res.locals.username = req.cookies.username;
+  res.render('urls-show');
 });
 
 app.post('/urls/:id/update', (req, res) => {
