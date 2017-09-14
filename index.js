@@ -34,6 +34,15 @@ app.post('/logout', (req, res) => {
   res.redirect(303, '/urls');
 });
 
+app.get('/register', (req, res) => {
+  res.locals.username = req.cookies.username;
+  res.render('urls-register');
+});
+
+app.post('/register', (req, res) => {
+  res.redirect(303, '/urls');
+});
+
 app.get('/u/:shortURL', (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(301, longURL ? longURL : '/urls');
