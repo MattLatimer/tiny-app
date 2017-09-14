@@ -54,6 +54,16 @@ const isRegistered = function(mail) {
   return false;
 };
 
+const urlsForUser = function(uid) {
+  const shortList = {};
+  for (const key in urlDatabase) {
+    if (uid === urlDatabase[key].userId) {
+      shortList[key] = { url: urlDatabase[key].url };
+    }
+  }
+  return shortList;
+};
+
 // Preset Variables
 //-----------------
 app.locals.urls = urlDatabase;
@@ -118,6 +128,8 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
+  const userUrls = urlsForUser(res.locals.userId);
+  res.locals.urls = userUrls;
   res.render('urls-index');
 });
 
@@ -152,7 +164,7 @@ app.get('/urls/:id', (req, res) => {
 app.post('/urls/:id/update', (req, res) => {
   const targetURL = urlDatabase[req.params.id];
   if (res.locals.userId === targetURL.userId) {
-    target.url = req.body.longURL;
+    targetURL.url = req.body.longURL;
   }
   res.redirect(303, '/urls');
 });
