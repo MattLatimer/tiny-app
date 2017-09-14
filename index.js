@@ -67,18 +67,17 @@ app.post('/login', (req, res) => {
     res.cookie('user_id', user);
     res.redirect(303, '/urls');
   } else {
-    res.status(403);
-    res.send('Login Error');
+    res.status(403).send('Login Error: Email or Password Incorrect.');
   }
 });
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('user_id');
   res.redirect(303, '/urls');
 });
 
 app.get('/register', (req, res) => {
-  res.locals.username = req.cookies.username;
+  res.locals.userId = req.cookies.user_id;
   res.render('urls-register');
 });
 
@@ -86,7 +85,7 @@ app.post('/register', (req, res) => {
   if (!req.body.email || !req.body.password) {
     res.status(400).send('Bad Request: Missing Email or Password');
   } else if (isRegistered(req.body.email)) {
-    res.status(400).send('Bad Request: Email already registered');
+    res.status(400).send('Bad Request: Email Already Registered');
   } else {
     const newId = generateRandomString();
     users[newId] = {
@@ -105,7 +104,7 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  res.locals.username = req.cookies.username;
+  res.locals.userId = req.cookies.user_id;
   res.render('urls-index');
 });
 
@@ -118,13 +117,13 @@ app.post('/urls', (req, res) => {
 });
 
 app.get('/urls/new', (req, res) => {
-  res.locals.username = req.cookies.username;
+  res.locals.userId = req.cookies.user_id;
   res.render('urls-new');
 });
 
 app.get('/urls/:id', (req, res) => {
   res.locals.shortURL = req.params.id;
-  res.locals.username = req.cookies.username;
+  res.locals.userId = req.cookies.user_id;
   res.render('urls-show');
 });
 
