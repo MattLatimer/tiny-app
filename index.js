@@ -29,6 +29,11 @@ app.post('/login', (req, res) => {
   res.redirect(303, '/urls');
 });
 
+app.post('/logout', (req, res) => {
+  res.clearCookie('username');
+  res.redirect(303, '/urls');
+});
+
 app.get('/u/:shortURL', (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(301, longURL ? longURL : '/urls');
