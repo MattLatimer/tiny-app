@@ -39,16 +39,13 @@ const generateRandomString = function() {
   return Math.floor((1 + Math.random()) * 2176782336).toString(36).substring(1);
 };
 
-const alreadyRegistered = function(mail) {
-  let isIt = false;
+const isRegistered = function(mail) {
   for (const user in users) {
-    console.log(users[user].email, mail);
     if (users[user].email === mail) {
-      isIt = true;
+      return user;
     }
   }
-  console.log(isIt);
-  return isIt;
+  return false;
 };
 
 // Server Routing
@@ -65,8 +62,14 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-
-  res.redirect(303, '/urls');
+  user = isRegistered(req.body.email);
+  if (user && req.body.password === users[user].password) {
+    res.cookie('user_id', user);
+    res.redirect(303, '/urls');
+  } else {
+    res.status(403);
+    res.send('Login Error');
+  }
 });
 
 app.post('/logout', (req, res) => {
@@ -80,12 +83,12 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  const newId = generateRandomString();
   if (!req.body.email || !req.body.password) {
     res.status(400).send('Bad Request: Missing Email or Password');
-  } else if (alreadyRegistered(req.body.email)) {
+  } else if (isRegistered(req.body.email)) {
     res.status(400).send('Bad Request: Email already registered');
   } else {
+    const newId = generateRandomString();
     users[newId] = {
       id: newId,
       email: req.body.email,
