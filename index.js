@@ -1,20 +1,25 @@
 // Load Requirments
-
+//-----------------
 const express = require("express");
 const app = express();
-// default port 8080
+//  default port 8080
 const PORT = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 // Set Middleware
-
+//---------------
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
-// Prefilled "Databases"
+app.use((req, res, next) => {
+  res.locals.userId = req.cookies.user_id;
+  next();
+});
 
+// Prefilled "Databases"
+//----------------------
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -34,7 +39,7 @@ const users = {
 };
 
 // Helpful Functions
-
+//------------------
 const generateRandomString = function() {
   return Math.floor((1 + Math.random()) * 2176782336).toString(36).substring(1);
 };
@@ -48,11 +53,13 @@ const isRegistered = function(mail) {
   return false;
 };
 
-// Server Routing
-
+// Preset Variables
+//-----------------
 app.locals.urls = urlDatabase;
 app.locals.users = users;
 
+// Server Routing
+//---------------
 app.get("/", (req, res) => {
   res.end("Hello!");
 });
@@ -104,7 +111,6 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  res.locals.userId = req.cookies.user_id;
   res.render('urls-index');
 });
 
