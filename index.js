@@ -41,7 +41,7 @@ app.get('/u/:shortURL', (req, res) => {
 
 app.get('/urls', (req, res) => {
   let templateVars = {
-    username: req.cookies['username']
+    username: req.cookies.username
   };
   res.render('urls-index', templateVars);
 });
@@ -55,7 +55,7 @@ app.post('/urls', (req, res) => {
 
 app.get('/urls/new', (req, res) => {
   let templateVars = {
-    username: req.cookies['username']
+    username: req.cookies.username
   };
   res.render('urls-new', templateVars);
 });
@@ -63,7 +63,7 @@ app.get('/urls/new', (req, res) => {
 app.get('/urls/:id', (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
-    username: req.cookies['username']
+    username: req.cookies.username
   };
   res.render('urls-show', templateVars);
 });
