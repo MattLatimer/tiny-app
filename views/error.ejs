@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>TinyNOPE</title>
-  </head>
-  <body>
-    <% include partials/_header %>
-    <% if (error === 'noLogin') { %>
-      <p>You can't manage tinyURLs if you're not logged in!</p>
-    <% } %>
-    <% if (error === 'notYours') { %>
-      <p>None of your tinyURLs exist here!</p>
-    <% } %>
-    <% if (error === 'noLink') { %>
-      <p>This tiny has no URL!</p>
-    <% } %>
-    <% if (error === 'badLogin') { %>
-      <p>Couldn't log you in with those credentials!</p>
-    <% } %>
-    <% if (error === 'emptyField') { %>
-      <p>Can't leave the fields empty!</p>
-    <% } %>
-    <% if (error === 'nameTaken') { %>
-      <p>That Email address is already registered!</p>
-    <% } %>
-  </body>
+<head>
+  <% include partials/_head %>
+  <title>TinyNOPE</title>
+</head>
+<body>
+  <% include partials/_header %>
+  <% if (error === 'noLogin') { %>
+    <p>You can't manage tinyURLs if you're not logged in!</p>
+  <% } %>
+  <% if (error === 'notYours') { %>
+    <p>None of your tinyURLs exist here!</p>
+  <% } %>
+  <% if (error === 'noLink') { %>
+    <p>This tiny has no URL!</p>
+  <% } %>
+  <% if (error === 'badLogin') { %>
+    <p>Couldn't log you in with those credentials!</p>
+  <% } %>
+  <% if (error === 'emptyField') { %>
+    <p>Can't leave the fields empty!</p>
+  <% } %>
+  <% if (error === 'nameTaken') { %>
+    <p>That Email address is already registered!</p>
+  <% } %>
+</body>
 </html>
