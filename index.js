@@ -145,7 +145,7 @@ app.get('/urls', (req, res) => {
     res.locals.urls = userUrls;
     res.render('urls-index');
   } else {
-    res.locals.error = 'nologin';
+    res.locals.error = 'noLogin';
     res.render('error');
   }
 });
@@ -193,8 +193,15 @@ app.post('/urls/:id', (req, res) => {
   const targetURL = urlDatabase[req.params.id];
   if (res.locals.userId === targetURL.userId) {
     targetURL.url = req.body.longURL;
+    res.redirect(303, '/urls');
+  } else {
+    if (res.locals.userId) {
+      res.locals.error = 'notYours';
+    } else {
+      res.locals.error = 'noLogin';
+    }
   }
-  res.redirect(303, '/urls');
+  res.render('error');
 });
 
 app.post('/urls/:id/delete', (req, res) => {
