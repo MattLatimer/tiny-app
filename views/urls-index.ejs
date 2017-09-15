@@ -11,9 +11,9 @@
   <table>
     <% userUrls.forEach((key) => { %>
     <tr>
-      <td><%= urls[key].id %></td>
+      <td><%= urlDatabase[key].id %></td>
       <td> => </td>
-      <td><%= urls[key].url %></td>
+      <td><%= urlDatabase[key].url %></td>
       <td><a href="/urls/<%= key %>">Edit</a></td>
       <td><form action="/urls/<%= key %>/delete" method="post">
         <input type="submit" value='Delete'>

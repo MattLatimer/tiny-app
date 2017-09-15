@@ -50,7 +50,7 @@ const urlsForUser = function(uid) {
 
 // Preset Variables
 //-----------------
-app.locals.urls = urlDatabase;
+app.locals.urlDatabase = urlDatabase;
 app.locals.users = users;
 
 // Cookie Handling

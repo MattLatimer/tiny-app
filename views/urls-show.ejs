@@ -13,7 +13,7 @@
       <td><%= shortURL %>: </td>
       <td>
         <form action="/urls/<%= shortURL %>" method="post">
-          <input type="text" id='longURL' name='longURL' value='<%= urls[shortURL].url %>'>
+          <input type="text" id='longURL' name='longURL' value='<%= urlDatabase[shortURL].url %>'>
           <input type="submit" value='Update' id="longURL">
         </form>
       </td>
