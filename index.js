@@ -104,7 +104,8 @@ app.post('/login', (req, res) => {
     req.session.userId = user;
     res.redirect(303, '/urls');
   } else {
-    res.status(403).send('Login Error: Email or Password Incorrect.');
+    res.locals.error = 'badLogin';
+    res.render('error');
   }
 });
 
