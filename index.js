@@ -5,14 +5,17 @@ const app = express();
 //  default port 8080
 const PORT = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 
 // Set Middleware
 //---------------
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['thisKeyIsTooHard', 'ThisKeyIsTooSoft', 'ThisKeyIsJustRight']
+}));
 
 // Prefilled "Databases"
 //----------------------
@@ -73,7 +76,8 @@ app.locals.users = users;
 // Cookie Handling
 //----------------
 app.use((req, res, next) => {
-  res.locals.userId = req.cookies.user_id;
+  //   res.locals.userId = req.cookies.userId;
+  res.locals.userId = req.session.userId;
   next();
 });
 
@@ -90,7 +94,8 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
   user = isRegistered(req.body.email);
   if (user && bcrypt.compareSync(req.body.password, users[user].password)) {
-    res.cookie('user_id', user);
+    // res.cookie('userId', user);
+    req.session.userId = user;
     res.redirect(303, '/urls');
   } else {
     res.status(403).send('Login Error: Email or Password Incorrect.');
@@ -98,7 +103,8 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('user_id');
+  // res.clearCookie('userId');
+  req.session.userId = '';
   res.redirect(303, '/urls');
 });
 
@@ -118,7 +124,8 @@ app.post('/register', (req, res) => {
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 10)
     };
-    res.cookie('user_id', newId);
+    // res.cookie('userId', newId);
+    req.session.userId = newId;
     res.redirect(303, '/urls');
   }
 });
