@@ -145,7 +145,7 @@ app.post('/register', (req, res) => {
 
 app.get('/u/:id', (req, res) => {
   if (urlDatabase[req.params.id]) {
-    res.redirect(301, urlDatabase[req.params.shortURL].url);
+    res.redirect(301, urlDatabase[req.params.id].url);
   } else {
     res.redirect('/error/noLink');
   }
