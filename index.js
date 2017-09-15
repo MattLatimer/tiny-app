@@ -86,7 +86,7 @@ app.get("/", (req, res) => {
   if (req.session.userId) {
     res.redirect('/urls');
   } else {
-    res.redirect('/login')
+    res.redirect('/login');
   }
 });
 
@@ -136,9 +136,13 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  const userUrls = urlsForUser(res.locals.userId);
-  res.locals.urls = userUrls;
-  res.render('urls-index');
+  if (req.session.userId) {
+    const userUrls = urlsForUser(res.locals.userId);
+    res.locals.urls = userUrls;
+    res.render('urls-index');
+  } else {
+    res.render('error-login');
+  }
 });
 
 app.get('/urls/new', (req, res) => {
