@@ -141,7 +141,8 @@ app.get('/urls', (req, res) => {
     res.locals.urls = userUrls;
     res.render('urls-index');
   } else {
-    res.render('error-login');
+    res.locals.error = 'nologin';
+    res.render('error');
   }
 });
 
@@ -169,26 +170,31 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.get('/urls/:id', (req, res) => {
-  if (res.locals.userId === urlDatabase[req.params.id].userId) {
+  if (urlDatabase[req.params.id] && res.locals.userId === urlDatabase[req.params.id].userId) {
     res.locals.shortURL = req.params.id;
     res.render('urls-show');
   } else {
-    res.status(403).send('This doesn\'t belong to you!');
+    if (res.locals.userId) {
+      res.locals.error = 'notYours';
+    } else {
+      res.locals.error = 'noLogin';
+    }
+    res.render('error');
   }
+});
+
+app.post('/urls/:id', (req, res) => {
+  const targetURL = urlDatabase[req.params.id];
+  if (res.locals.userId === targetURL.userId) {
+    targetURL.url = req.body.longURL;
+  }
+  res.redirect(303, '/urls');
 });
 
 app.post('/urls/:id/delete', (req, res) => {
   const targetURL = urlDatabase[req.params.id];
   if (res.locals.userId === targetURL.userId) {
     delete urlDatabase[req.params.id];
-  }
-  res.redirect(303, '/urls');
-});
-
-app.post('/urls/:id/update', (req, res) => {
-  const targetURL = urlDatabase[req.params.id];
-  if (res.locals.userId === targetURL.userId) {
-    targetURL.url = req.body.longURL;
   }
   res.redirect(303, '/urls');
 });

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tiny App</title>
+  </head>
+  <body>
+    <% include partials/_header %>
+    <% if (error === 'noLogin') { %>
+      <p>You can't manage tinyURLs if you're not logged in!</p>
+    <% } %>
+    <% if (error === 'notYours') { %>
+      <p>None of your tinyURLs exist here!</p>
+    <% } %>
+  </body>
+</html>
