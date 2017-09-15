@@ -208,8 +208,15 @@ app.post('/urls/:id/delete', (req, res) => {
   const targetURL = urlDatabase[req.params.id];
   if (res.locals.userId === targetURL.userId) {
     delete urlDatabase[req.params.id];
+    res.redirect(303, '/urls');
+  } else {
+    if (res.locals.userId) {
+      res.locals.error = 'notYours';
+    } else {
+      res.locals.error = 'noLogin';
+    }
   }
-  res.redirect(303, '/urls');
+  res.render('error');
 });
 
 app.get('/urls.json', (req, res) => {
