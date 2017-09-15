@@ -10,7 +10,7 @@
     <tr>
       <td>
         <h3>tinyURL: <%= shortURL %></h3>
-        <p>Created: <%= urlDatabase[shortURL].time %>, visited <%= urlDatabase[shortURL].visits %> time(s).</p>
+        <p>Created <%= urlDatabase[key].time %>. Visited <%= urlDatabase[key].visits %> time(s) by <%= urlDatabase[key].visitors.length %> unique visitor(s).</p>
       </td>
     </tr>
     <tr>

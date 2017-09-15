@@ -57,6 +57,9 @@ app.locals.users = users;
 //----------------
 app.use((req, res, next) => {
   res.locals.userId = req.session.userId;
+  if (!req.session.visitorId) {
+    req.session.visitorId = generateRandomString();
+  }
   next();
 });
 
@@ -124,9 +127,15 @@ app.post('/register', (req, res) => {
 });
 
 app.get('/u/:id', (req, res) => {
-  if (urlDatabase[req.params.id]) {
-    urlDatabase[req.params.id].visits++;
-    res.redirect(301, urlDatabase[req.params.id].url);
+  const tinyURL = urlDatabase[req.params.id];
+  if (tinyURL) {
+    tinyURL.visits++;
+    console.log(tinyURL.visitors);
+
+    if (tinyURL.visitors.indexOf(req.session.visitorId) === -1) {
+      tinyURL.visitors.push(req.session.visitorId);
+    }
+    res.redirect(301, tinyURL.url);
   } else {
     res.redirect('/error/noLink');
   }
@@ -151,7 +160,8 @@ app.post('/urls', (req, res) => {
       url: (schemeIncluded !== -1) ? longURL : `http://${longURL}`,
       userId: res.locals.userId,
       time: new Date().toDateString(),
-      visits: 0
+      visits: 0,
+      visitors: []
     };
     res.redirect(303, `/urls/${shortURL}`);
   } else {
