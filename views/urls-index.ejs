@@ -15,7 +15,7 @@
       <td> => </td>
       <td>
         <p><%= urlDatabase[key].url %></p>
-        <p>Created: <%= urlDatabase[key].time %></p>
+        <p>Created: <%= urlDatabase[key].time %>, visited <%= urlDatabase[key].visits %> time(s).</p>
       </td>
       <td><a href="/urls/<%= key %>">Edit</a></td>
       <td><form action="/urls/<%= key %>/delete" method="post">

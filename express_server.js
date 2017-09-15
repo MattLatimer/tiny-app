@@ -125,6 +125,7 @@ app.post('/register', (req, res) => {
 
 app.get('/u/:id', (req, res) => {
   if (urlDatabase[req.params.id]) {
+    urlDatabase[req.params.id].visits++;
     res.redirect(301, urlDatabase[req.params.id].url);
   } else {
     res.redirect('/error/noLink');
@@ -149,7 +150,8 @@ app.post('/urls', (req, res) => {
     urlDatabase[shortURL] = {
       url: (schemeIncluded !== -1) ? longURL : `http://${longURL}`,
       userId: res.locals.userId,
-      time: new Date().toDateString()
+      time: new Date().toDateString(),
+      visits: 0
     };
     res.redirect(303, `/urls/${shortURL}`);
   } else {
