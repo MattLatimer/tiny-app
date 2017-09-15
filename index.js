@@ -90,6 +90,11 @@ app.get("/", (req, res) => {
   }
 });
 
+app.get('/error/:err', (req, res) => {
+  res.locals.error = req.params.err;
+  res.render('error');
+});
+
 app.get('/login', (req, res) => {
   if (res.locals.userId) {
     res.redirect(303, 'urls');
@@ -104,8 +109,7 @@ app.post('/login', (req, res) => {
     req.session.userId = user;
     res.redirect(303, '/urls');
   } else {
-    res.locals.error = 'badLogin';
-    res.render('error');
+    res.redirect('/error/badLogin')
   }
 });
 
@@ -124,9 +128,9 @@ app.get('/register', (req, res) => {
 
 app.post('/register', (req, res) => {
   if (!req.body.email || !req.body.password) {
-    res.status(400).send('Bad Request: Missing Email or Password');
+    res.redirect('/error/emptyField');
   } else if (isRegistered(req.body.email)) {
-    res.status(400).send('Bad Request: Email Already Registered');
+    res.redirect('/error/nameTaken');
   } else {
     const newId = generateRandomString();
     users[newId] = {
@@ -143,8 +147,7 @@ app.get('/u/:id', (req, res) => {
   if (urlDatabase[req.params.id]) {
     res.redirect(301, urlDatabase[req.params.shortURL].url);
   } else {
-    res.locals.error = 'noLink';
-    res.render('error');
+    res.redirect('/error/noLink');
   }
 });
 
@@ -154,8 +157,7 @@ app.get('/urls', (req, res) => {
     res.locals.urls = userUrls;
     res.render('urls-index');
   } else {
-    res.locals.error = 'noLogin';
-    res.render('error');
+    res.redirect('/error/noLogin');
   }
 });
 
@@ -170,8 +172,7 @@ app.post('/urls', (req, res) => {
     };
     res.redirect(303, `/urls/${shortURL}`);
   } else {
-    res.locals.error = 'noLogin';
-    res.render('error');
+    res.redirect('/error/noLogin');
   }
 });
 
@@ -190,11 +191,10 @@ app.get('/urls/:id', (req, res) => {
     res.render('urls-show');
   } else {
     if (res.locals.userId) {
-      res.locals.error = 'notYours';
+      res.redirect('/error/notYours');
     } else {
-      res.locals.error = 'noLogin';
+      res.redirect('/error/noLogin');
     }
-    res.render('error');
   }
 });
 
@@ -205,12 +205,11 @@ app.post('/urls/:id', (req, res) => {
     res.redirect(303, '/urls');
   } else {
     if (res.locals.userId) {
-      res.locals.error = 'notYours';
+      res.redirect('/error/notYours');
     } else {
-      res.locals.error = 'noLogin';
+      res.redirect('/error/noLogin');
     }
   }
-  res.render('error');
 });
 
 app.post('/urls/:id/delete', (req, res) => {
@@ -220,12 +219,11 @@ app.post('/urls/:id/delete', (req, res) => {
     res.redirect(303, '/urls');
   } else {
     if (res.locals.userId) {
-      res.locals.error = 'notYours';
+      res.redirect('/error/notYours');
     } else {
-      res.locals.error = 'noLogin';
+      res.redirect('/error/noLogin');
     }
   }
-  res.render('error');
 });
 
 app.get('/urls.json', (req, res) => {
