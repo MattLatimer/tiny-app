@@ -10,7 +10,10 @@
     <%- include ./partials/_header %>    
   <table>
     <tr>
-      <td><h3>tinyURL: <%= shortURL %></h3></td>
+      <td>
+        <h3>tinyURL: <%= shortURL %></h3>
+        <p class='time'>Created: <%= urlDatabase[shortURL].time %></p>
+      </td>
     </tr>
     <tr>
       <td>

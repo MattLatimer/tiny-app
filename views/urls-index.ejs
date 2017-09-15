@@ -13,7 +13,10 @@
     <tr>
       <td><%= key %></td>
       <td> => </td>
-      <td><%= urlDatabase[key].url %></td>
+      <td>
+        <p><%= urlDatabase[key].url %></p>
+        <p>Created: <%= urlDatabase[key].time %></p>
+      </td>
       <td><a href="/urls/<%= key %>">Edit</a></td>
       <td><form action="/urls/<%= key %>/delete" method="post">
         <input type="submit" value='Delete'>

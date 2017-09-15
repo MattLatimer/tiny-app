@@ -148,7 +148,8 @@ app.post('/urls', (req, res) => {
     const schemeIncluded = longURL.search(':');
     urlDatabase[shortURL] = {
       url: (schemeIncluded !== -1) ? longURL : `http://${longURL}`,
-      userId: res.locals.userId
+      userId: res.locals.userId,
+      time: new Date().toDateString()
     };
     res.redirect(303, `/urls/${shortURL}`);
   } else {
