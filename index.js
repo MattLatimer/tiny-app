@@ -130,13 +130,17 @@ app.post('/register', (req, res) => {
   }
 });
 
-app.get('/u/:shortURL', (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL].url;
-  res.redirect(301, longURL ? longURL : '/urls');
+app.get('/u/:id', (req, res) => {
+  if (urlDatabase[req.params.id]) {
+    res.redirect(301, urlDatabase[req.params.shortURL].url);
+  } else {
+    res.locals.error = 'noLink';
+    res.render('error');
+  }
 });
 
 app.get('/urls', (req, res) => {
-  if (req.session.userId) {
+  if (res.locals.userId) {
     const userUrls = urlsForUser(res.locals.userId);
     res.locals.urls = userUrls;
     res.render('urls-index');
@@ -170,8 +174,9 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.get('/urls/:id', (req, res) => {
-  if (urlDatabase[req.params.id] && res.locals.userId === urlDatabase[req.params.id].userId) {
-    res.locals.shortURL = req.params.id;
+  const urlId = req.params.id;
+  if (urlDatabase[urlId] && res.locals.userId === urlDatabase[urlId].userId) {
+    res.locals.shortURL = urlId;
     res.render('urls-show');
   } else {
     if (res.locals.userId) {

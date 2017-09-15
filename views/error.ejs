@@ -11,5 +11,8 @@
     <% if (error === 'notYours') { %>
       <p>None of your tinyURLs exist here!</p>
     <% } %>
+    <% if (error === 'noLink') { %>
+      <p>This tiny has no URL!</p>
+    <% } %>
   </body>
 </html>
