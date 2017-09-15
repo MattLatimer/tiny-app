@@ -91,7 +91,11 @@ app.get("/", (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.render('urls-login');
+  if (res.locals.userId) {
+    res.redirect(303, 'urls');
+  } else {
+    res.render('urls-login');
+  }
 });
 
 app.post('/login', (req, res) => {
