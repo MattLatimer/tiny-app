@@ -83,7 +83,11 @@ app.use((req, res, next) => {
 // Server Routing
 //---------------
 app.get("/", (req, res) => {
-  res.end("Hello!");
+  if (req.session.userId) {
+    res.redirect('/urls');
+  } else {
+    res.redirect('/login')
+  }
 });
 
 app.get('/login', (req, res) => {
