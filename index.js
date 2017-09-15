@@ -17,31 +17,11 @@ app.use(cookieSession({
   keys: ['thisKeyIsTooHard', 'ThisKeyIsTooSoft', 'ThisKeyIsJustRight']
 }));
 
-// Prefilled "Databases"
+// "Databases"
 //----------------------
-const urlDatabase = {
-  "b2xVn2": {
-    url: "http://www.lighthouselabs.ca",
-    userId: 'userRandomID'
-  },
-  "9sm5xK": {
-    url: "http://www.google.com",
-    userId: 'user2RandomID'
-  }
-};
+const urlDatabase = {};
 
-const users = {
-  "userRandomID": {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "purple-monkey-dinosaur"
-  },
-  "user2RandomID": {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk"
-  }
-};
+const users = {};
 
 // Helpful Functions
 //------------------
@@ -49,7 +29,7 @@ const generateRandomString = function() {
   return Math.floor((1 + Math.random()) * 2176782336).toString(36).substring(1);
 };
 
-const isRegistered = function(mail) {
+const emailToId = function(mail) {
   for (const user in users) {
     if (users[user].email === mail) {
       return user;
@@ -59,10 +39,10 @@ const isRegistered = function(mail) {
 };
 
 const urlsForUser = function(uid) {
-  const shortList = {};
+  const shortList = [];
   for (const key in urlDatabase) {
     if (uid === urlDatabase[key].userId) {
-      shortList[key] = { url: urlDatabase[key].url };
+      shortList.push(key);
     }
   }
   return shortList;
@@ -104,7 +84,7 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  user = isRegistered(req.body.email);
+  user = emailToId(req.body.email);
   if (user && bcrypt.compareSync(req.body.password, users[user].password)) {
     req.session.userId = user;
     res.redirect(303, '/urls');
@@ -129,7 +109,7 @@ app.get('/register', (req, res) => {
 app.post('/register', (req, res) => {
   if (!req.body.email || !req.body.password) {
     res.redirect('/error/emptyField');
-  } else if (isRegistered(req.body.email)) {
+  } else if (emailToId(req.body.email)) {
     res.redirect('/error/nameTaken');
   } else {
     const newId = generateRandomString();
@@ -154,7 +134,7 @@ app.get('/u/:id', (req, res) => {
 app.get('/urls', (req, res) => {
   if (res.locals.userId) {
     const userUrls = urlsForUser(res.locals.userId);
-    res.locals.urls = userUrls;
+    res.locals.userUrls = userUrls;
     res.render('urls-index');
   } else {
     res.redirect('/error/noLogin');

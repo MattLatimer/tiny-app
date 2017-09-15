@@ -9,9 +9,9 @@
 <body>
     <%- include ./partials/_header %>    
   <table>
-    <% for (let key in urls) { %>
+    <% userUrls.forEach((key) => { %>
     <tr>
-      <td><%= key %></td>
+      <td><%= urls[key].id %></td>
       <td> => </td>
       <td><%= urls[key].url %></td>
       <td><a href="/urls/<%= key %>">Edit</a></td>
@@ -19,7 +19,7 @@
         <input type="submit" value='Delete'>
       </form></td>
     </tr>
-    <% } %>
+    <% }) %>
   </table>
   <% if (userId) {%>
     <a href="/urls/new">Shorten a new URL</a>
