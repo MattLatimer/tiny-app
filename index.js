@@ -161,7 +161,8 @@ app.post('/urls', (req, res) => {
     };
     res.redirect(303, `/urls/${shortURL}`);
   } else {
-    res.redirect('/login');
+    res.locals.error = 'noLogin';
+    res.render('error');
   }
 });
 
