@@ -10,7 +10,9 @@
     <%- include ./partials/_header %>    
   <table>
     <tr>
-      <td><%= shortURL %>: </td>
+      <td><h3>tinyURL: <%= shortURL %></h3></td>
+    </tr>
+    <tr>
       <td>
         <form action="/urls/<%= shortURL %>" method="post">
           <input type="text" id='longURL' name='longURL' value='<%= urlDatabase[shortURL].url %>'>
