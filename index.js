@@ -76,7 +76,6 @@ app.locals.users = users;
 // Cookie Handling
 //----------------
 app.use((req, res, next) => {
-  //   res.locals.userId = req.cookies.userId;
   res.locals.userId = req.session.userId;
   next();
 });
@@ -94,7 +93,6 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
   user = isRegistered(req.body.email);
   if (user && bcrypt.compareSync(req.body.password, users[user].password)) {
-    // res.cookie('userId', user);
     req.session.userId = user;
     res.redirect(303, '/urls');
   } else {
@@ -103,7 +101,6 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  // res.clearCookie('userId');
   req.session.userId = '';
   res.redirect(303, '/urls');
 });
@@ -124,7 +121,6 @@ app.post('/register', (req, res) => {
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 10)
     };
-    // res.cookie('userId', newId);
     req.session.userId = newId;
     res.redirect(303, '/urls');
   }
