@@ -130,8 +130,6 @@ app.get('/u/:id', (req, res) => {
   const tinyURL = urlDatabase[req.params.id];
   if (tinyURL) {
     tinyURL.visits++;
-    console.log(tinyURL.visitors);
-
     if (tinyURL.visitors.indexOf(req.session.visitorId) === -1) {
       tinyURL.visitors.push(req.session.visitorId);
     }
@@ -228,5 +226,5 @@ app.get('/hello', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`tinyURL listening on port ${PORT}!`);
 });
