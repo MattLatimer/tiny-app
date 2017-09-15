@@ -109,12 +109,12 @@ app.post('/login', (req, res) => {
     req.session.userId = user;
     res.redirect(303, '/urls');
   } else {
-    res.redirect('/error/badLogin')
+    res.redirect('/error/badLogin');
   }
 });
 
 app.post('/logout', (req, res) => {
-  req.session.userId = '';
+  req.session = null;
   res.redirect(303, '/urls');
 });
 
