@@ -145,15 +145,7 @@ app.get('/urls', (req, res) => {
   }
 });
 
-app.get('/urls/new', (req, res) => {
-  if (res.locals.userId) {
-    res.render('urls-new');
-  } else {
-    res.redirect('/login');
-  }
-});
-
-app.post('/urls/new', (req, res) => {
+app.post('/urls', (req, res) => {
   if (res.locals.userId) {
     const shortURL = generateRandomString();
     const {longURL} = req.body;
@@ -168,6 +160,14 @@ app.post('/urls/new', (req, res) => {
   }
 });
 
+app.get('/urls/new', (req, res) => {
+  if (res.locals.userId) {
+    res.render('urls-new');
+  } else {
+    res.redirect('/login');
+  }
+});
+
 app.get('/urls/:id', (req, res) => {
   if (res.locals.userId === urlDatabase[req.params.id].userId) {
     res.locals.shortURL = req.params.id;
@@ -177,18 +177,18 @@ app.get('/urls/:id', (req, res) => {
   }
 });
 
-app.post('/urls/:id/update', (req, res) => {
-  const targetURL = urlDatabase[req.params.id];
-  if (res.locals.userId === targetURL.userId) {
-    targetURL.url = req.body.longURL;
-  }
-  res.redirect(303, '/urls');
-});
-
 app.post('/urls/:id/delete', (req, res) => {
   const targetURL = urlDatabase[req.params.id];
   if (res.locals.userId === targetURL.userId) {
     delete urlDatabase[req.params.id];
+  }
+  res.redirect(303, '/urls');
+});
+
+app.post('/urls/:id/update', (req, res) => {
+  const targetURL = urlDatabase[req.params.id];
+  if (res.locals.userId === targetURL.userId) {
+    targetURL.url = req.body.longURL;
   }
   res.redirect(303, '/urls');
 });
