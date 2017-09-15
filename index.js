@@ -114,7 +114,11 @@ app.post('/logout', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  res.render('urls-register');
+  if (res.locals.userID) {
+    res.redirect(303, '/urls');
+  } else {
+    res.render('urls-register');
+  }
 });
 
 app.post('/register', (req, res) => {
