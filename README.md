@@ -5,7 +5,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 ## Final Product
 
 !["tinyURL lists all the URLs you've tinified!"](https://github.com/MattLatimer/tiny-app/blob/master/docs/tinyURL-list.png?raw=true)
-!["Create new tinyURLs to anywhere on the web!"](https://github.com/MattLatimer/tiny-app/blob/master/docs/tinyURL-new.png?raw=true)
+!["Keep track of when your link is clicked, and how many different people are clicking!"](https://github.com/MattLatimer/tiny-app/blob/master/docs/tinyURL-show.png?raw=true)
 
 ## Dependencies
 
@@ -15,6 +15,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 - bcrypt
 - body-parser
 - cookie-session
+- method-override
 
 ## Getting Started
 
