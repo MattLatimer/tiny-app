@@ -130,10 +130,14 @@ app.post('/register', (req, res) => {
 
 app.get('/u/:id', (req, res) => {
   const tinyURL = urlDatabase[req.params.id];
+  const visitor = req.session.visitorId;
   if (tinyURL) {
-    tinyURL.visits++;
-    if (tinyURL.visitors.indexOf(req.session.visitorId) === -1) {
-      tinyURL.visitors.push(req.session.visitorId);
+    tinyURL.visits.push({
+      visitorID: visitor,
+      visitTime: new Date().toString()
+    });
+    if (tinyURL.visitors.indexOf(visitor) === -1) {
+      tinyURL.visitors.push(visitor);
     }
     res.redirect(301, tinyURL.url);
   } else {
@@ -160,7 +164,7 @@ app.post('/urls', (req, res) => {
       url: (schemeIncluded !== -1) ? longURL : `http://${longURL}`,
       userId: res.locals.userId,
       time: new Date().toDateString(),
-      visits: 0,
+      visits: [],
       visitors: []
     };
     res.redirect(303, `/urls/${shortURL}`);

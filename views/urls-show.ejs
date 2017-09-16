@@ -10,7 +10,7 @@
     <tr>
       <td>
         <h3>tinyURL: <%= shortURL %></h3>
-        <p>Created <%= urlDatabase[shortURL].time %>. Visited <%= urlDatabase[shortURL].visits %> time(s) by <%= urlDatabase[shortURL].visitors.length %> unique visitor(s).</p>
+        <p>Created <%= urlDatabase[shortURL].time %>. Visited <%= urlDatabase[shortURL].visits.length %> time(s) by <%= urlDatabase[shortURL].visitors.length %> unique visitor(s).</p>
       </td>
     </tr>
     <tr>
@@ -33,6 +33,15 @@
         </form>
       </td>
     </tr>
+  </table>
+  <hr>
+  <p>Visits Record:</p>
+  <table>
+    <% urlDatabase[shortURL].visits.forEach((element) => { %>
+      <tr>
+        <td><%= element.visitorID %> - <%= element.visitTime %></td>
+      </tr>
+      <% }) %>
   </table>
 </body>
 </html>
