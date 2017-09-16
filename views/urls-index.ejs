@@ -16,7 +16,7 @@
         <p>Created <%= urlDatabase[key].time %>. Visited <%= urlDatabase[key].visits %> time(s) by <%= urlDatabase[key].visitors.length %> unique visitor(s).</p>
       </td>
       <td><a href="/urls/<%= key %>">Edit</a></td>
-      <td><form action="/urls/<%= key %>/delete" method="post">
+      <td><form action="/urls/<%= key %>/delete?_method=DELETE" method="post">
         <input type="submit" value='Delete'>
       </form></td>
     </tr>

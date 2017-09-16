@@ -15,7 +15,7 @@
     </tr>
     <tr>
       <td>
-        <form action="/urls/<%= shortURL %>" method="post">
+        <form action="/urls/<%= shortURL %>?_method=PUT" method="post">
           <input type="text" id='longURL' name='longURL' value='<%= urlDatabase[shortURL].url %>'>
           <input type="submit" value='Update' id="longURL">
         </form>

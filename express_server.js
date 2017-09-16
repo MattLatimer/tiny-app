@@ -1,6 +1,7 @@
 // Load Requirments
 //-----------------
 const express = require("express");
+const methodOverride = require('method-override');
 const app = express();
 //  default port 8080
 const PORT = process.env.PORT || 8080;
@@ -16,6 +17,7 @@ app.use(cookieSession({
   name: 'session',
   keys: ['thisKeyIsTooHard', 'ThisKeyIsTooSoft', 'ThisKeyIsJustRight']
 }));
+app.use(methodOverride('_method'));
 
 // "Databases"
 //----------------------
@@ -189,7 +191,7 @@ app.get('/urls/:id', (req, res) => {
   }
 });
 
-app.post('/urls/:id', (req, res) => {
+app.put('/urls/:id', (req, res) => {
   const targetURL = urlDatabase[req.params.id];
   if (res.locals.userId === targetURL.userId) {
     targetURL.url = req.body.longURL;
@@ -203,7 +205,7 @@ app.post('/urls/:id', (req, res) => {
   }
 });
 
-app.post('/urls/:id/delete', (req, res) => {
+app.delete('/urls/:id/delete', (req, res) => {
   const targetURL = urlDatabase[req.params.id];
   if (res.locals.userId === targetURL.userId) {
     delete urlDatabase[req.params.id];
